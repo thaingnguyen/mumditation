@@ -92,14 +92,14 @@ export default class Home extends Component {
           </View>
           <View style={styles.info}>
             <Text style={styles.infoText}>BPM</Text>
-            <Text style={styles.infoText}>76</Text>
+            <Text style={styles.infoText}>{this.state.heart_rate['bpm']}</Text>
           </View>
         </View>
 
         <View style={styles.infoContainer}>
           <View style={styles.info}>
             <Text style={styles.infoText}>Stress Level</Text>
-            <Text style={styles.infoText}>Low</Text>
+            <Text style={styles.infoText}>{this.state.heart_rate['stress']}</Text>
           </View>
         </View>
 

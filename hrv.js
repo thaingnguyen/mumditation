@@ -1,43 +1,36 @@
 export default class HRVCalculator {
     static getHRV(data) {
-        console.log('something');
-        // console.log(data);
-        if(data) {
-            var arr = data['activities-heart-intraday']['dataset'];
-            var sum = 0;
-            var min = 2000;
-            var max = 0;
+        if (data) {
+            var bpms = data['activities-heart-intraday']['dataset'];
+            console.log(bpms.length);
 
-            console.log(arr.length);
-            
-            for(var index = 0; index < arr.length; index++) {
-                var parsedTime = arr[index].time.split(":");
-                var newTime = new Date();
-                newTime.setHours(+parsedTime[0]);
-                newTime.setMinutes(parsedTime[1]);
-                newTime.setSeconds(parsedTime[2]);
-                arr[index]['parsed_time'] = newTime;
+            for(var index = 0; index < bpms.length; index++) {
+                var parsedTime = bpms[index].time.split(":");
+                bpms[index]['parsed_time'] =
+                  this.createTime(parsedTime[0], parsedTime[1], parsedTime[2]);
             }
 
-            var rmssdArr = this.calculatingChunk(arr);
+            var rmssdArr = this.calculatingChunk(bpms);
             var time = [];
             var runningRMSSD = [];
             var runningSum = 0;
-            for(var index = rmssdArr.length-1; index >= rmssdArr.length - 1 - 120; index--) {
+            for(var index = rmssdArr.length-1; index >= Math.max(0, rmssdArr.length - 1 - 120); index--) {
                 time.push(rmssdArr[index].time.getHours() + ":" + rmssdArr[index].time.getMinutes());
                 runningRMSSD.push(rmssdArr[index].rmssd);
                 runningSum += rmssdArr[index].rmssd;
             }
-            var timeAndRMSSD = {};
+
             time.reverse();
             runningRMSSD.reverse();
-            timeAndRMSSD['time'] = time;
-            timeAndRMSSD['rmssd'] = runningRMSSD;
-            var avg = runningSum / rmssdArr.length;
-            timeAndRMSSD['avg_rmssd'] = avg.toString().substring(0, 5);
-            return timeAndRMSSD;
+
+            var stats = {};
+            stats['stress'] = this.getStressLevel(runningRMSSD, 0.5);
+            stats['bpm'] = bpms[bpms.length-1].value;
+            stats['time'] = time;
+            stats['rmssd'] = runningRMSSD;
+            stats['avg_rmssd'] = Number((runningSum / rmssdArr.length).toFixed(3));
+            return stats;
         }
-        else return "nope";
     }
 
     static getNumSeconds(input) {
@@ -55,15 +48,40 @@ export default class HRVCalculator {
                 count++;
             } else {
                 var rmssd = Math.sqrt(runningSum / (count-1));
-                var correspondingTime = new Date();
-                correspondingTime.setHours(arr[index-1].parsed_time.getHours());
-                correspondingTime.setMinutes(arr[index-1].parsed_time.getMinutes());
+                var correspondingTime = this.createTime(
+                    arr[index-1].parsed_time.getHours(),
+                    arr[index-1].parsed_time.getMinutes(),
+                    arr[index-1].parsed_time.getSeconds());
                 rmssdPerMinute.push({time : correspondingTime, rmssd : rmssd});
                 runningSum = 0;
                 count = 0;
             }
         }
         return rmssdPerMinute;
-        
+    }
+
+    static createTime(hour, minute, second) {
+      var time = new Date();
+      time.setHours(hour);
+      time.setMinutes(minute);
+      time.setSeconds(second);
+      return time;
+    }
+
+    static getStressLevel(rmsds, threshold) {
+      var lowerCount = 0;
+      for (var index = 0; index < rmsds.length; index++) {
+        if (rmsds[index] < threshold) {
+          lowerCount += 1;
+        }
+      }
+      var stressPercent = lowerCount / rmsds.length;
+      if (stressPercent < 0.3) {
+        return 'Low';
+      } else if (stressPercent < 0.6) {
+        return 'Medium';
+      } else {
+        return 'High';
+      }
     }
 }
