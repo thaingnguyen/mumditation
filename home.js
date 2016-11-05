@@ -27,7 +27,7 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
-    
+
   }
 
   componentWillMount() {
@@ -40,13 +40,27 @@ export default class Home extends Component {
             $set: {
               datasets: [{
                 yValues: this.state.heart_rate['rmssd'],
-                label: 'Running RMDDS',
+                label: '',
                 config: {
                   lineWidth: 2,
                   drawCircles: false,
                   drawCubic: true,
                   highlightColor: 'red',
-                  color: 'red'
+                  color: 'red',
+                  setDrawGridLines: false,
+                  setEnabled: false,
+                },
+                xAxis: {
+                  $set: {
+                    drawLabels: false,
+                    drawGridLines: false,
+                  }
+                },
+                yAxis: {
+                  $set: {
+                    drawLabels: false,
+                    drawGridLines: false,
+                  }
                 }
               }],
               xValues: this.state.heart_rate['time']
@@ -66,18 +80,32 @@ export default class Home extends Component {
             onActionSelected={this._onActionSelected}
             onIconClicked={() => this.setState({actionText: 'Icon clicked'})}
             style={styles.toolbar}
-            subtitle="Your current report"
-            title="Mumditate" />
-        <Button
-          style={{borderWidth: 1, borderColor: 'blue'}}
-          onPress={this._getData}>
-          Refresh Heart Rate Graph
-        </Button>
-        <Text style={styles.text}>Your average RMSSD: {this.state.heart_rate['avg_rmssd']}</Text>
+            subtitle="Daily report"
+            title="Mumditation"
+            titleColor="white"
+            subtitleColor="white"/>
+
+        <View style={styles.infoContainer}>
+          <View style={styles.info}>
+            <Text style={styles.infoText}>HRV</Text>
+            <Text style={styles.infoText}>{this.state.heart_rate['avg_rmssd']}</Text>
+          </View>
+          <View style={styles.info}>
+            <Text style={styles.infoText}>BPM</Text>
+            <Text style={styles.infoText}>76</Text>
+          </View>
+        </View>
+
+        <View style={styles.infoContainer}>
+          <View style={styles.info}>
+            <Text style={styles.infoText}>Stress Level</Text>
+            <Text style={styles.infoText}>Low</Text>
+          </View>
+        </View>
 
         <Graph data={this.state.data}></Graph>
 
-        <Button 
+        <Button
           style={{borderWidth:0.5, borderColor: 'black', height: 35}}
           onPress={this._giveAdvice}>
             Our Advice
@@ -126,21 +154,25 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     backgroundColor: '#F5FCFF'
   },
-  chart: {
-    flex: 1,
-    margin: 10
-  },
-  text: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 15,
-    margin: 10
-  },
   toolbar: {
-    backgroundColor: '#e9eaed',
-    height: 56,
+    backgroundColor: '#fd5c63',
+    height: 60,
     paddingBottom: 15,
     marginBottom: 10
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  info: {
+    width: 200,
+    flexDirection: 'column',
+    padding: 10
+  },
+  infoText: {
+    textAlign: 'center',
+    fontSize: 20
   }
 });
 
