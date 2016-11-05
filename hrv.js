@@ -20,29 +20,21 @@ export default class HRVCalculator {
             }
 
             var rmssdArr = this.calculatingChunk(arr);
-            // console.log(rmssdArr);
-
-            // var sumRMSSD = 0;
-            // for(var index = 0; index < rmssdArr.length; index++) {
-            //     sumRMSSD += rmssdArr[index].rmssd;     
-            //     // console.log(rmssdArr[index].rmssd);           
-            // }
-            // console.log(sumRMSSD);
-            // var meanRMSSD = sumRMSSD / rmssdArr.length;
-            // return "Mean RMSSD: " + meanRMSSD;
-
             var time = [];
             var runningRMSSD = [];
             var runningSum = 0;
-            for(var index = 0; index < rmssdArr.length; index++) {
+            for(var index = rmssdArr.length-1; index >= rmssdArr.length - 1 - 120; index--) {
                 time.push(rmssdArr[index].time.getHours() + ":" + rmssdArr[index].time.getMinutes());
                 runningRMSSD.push(rmssdArr[index].rmssd);
                 runningSum += rmssdArr[index].rmssd;
             }
             var timeAndRMSSD = {};
+            time.reverse();
+            runningRMSSD.reverse();
             timeAndRMSSD['time'] = time;
             timeAndRMSSD['rmssd'] = runningRMSSD;
-            timeAndRMSSD['avg_rmssd'] = runningSum / rmssdArr.length;
+            var avg = runningSum / rmssdArr.length;
+            timeAndRMSSD['avg_rmssd'] = avg.toString().substring(0, 5);
             return timeAndRMSSD;
         }
         else return "nope";

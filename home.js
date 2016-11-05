@@ -3,7 +3,8 @@ import {
   AppRegistry,
   Text,
   View,
-  StyleSheet
+  StyleSheet,
+  Alert
 } from 'react-native';
 import Button from 'react-native-button';
 import HRVCalculator from './hrv.js';
@@ -11,12 +12,15 @@ import HRVCalculator from './hrv.js';
 import reactAddonsUpdate from 'react-addons-update';
 import {LineChart} from 'react-native-mp-android-chart';
 
+var ToolbarAndroid = require('ToolbarAndroid');
+
 export default class Home extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
+      access_token : this.props.access_token,
       heart_rate : {},
       data: {},
       legend: {
@@ -57,7 +61,7 @@ export default class Home extends Component {
                   drawCircles: false,
                   drawCubic: true,
                   highlightColor: 'red',
-                  color: 'black'
+                  color: 'red'
                 }
               }],
               xValues: this.state.heart_rate['time']
@@ -71,12 +75,21 @@ export default class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <ToolbarAndroid
+            actions={toolbarActions}
+            //navIcon={require('./app_logo.jpg')}
+            onActionSelected={this._onActionSelected}
+            onIconClicked={() => this.setState({actionText: 'Icon clicked'})}
+            style={styles.toolbar}
+            subtitle="Your current report"
+            title="Mumditate" />
         <Button
           style={{borderWidth: 1, borderColor: 'blue'}}
           onPress={this._getData}>
-          Get Heart Rate
+          Refresh Heart Rate Graph
         </Button>
         <Text style={styles.text}>Your average RMSSD: {this.state.heart_rate['avg_rmssd']}</Text>
+
         <LineChart
           style={styles.chart}
           data={this.state.data}
@@ -101,6 +114,12 @@ export default class Home extends Component {
 
           keepPositionOnRotation={false}
         />
+
+        <Button 
+          style={{borderWidth:0.5, borderColor: 'black'}}
+          onPress={this._giveAdvice}>
+            Our Advice
+        </Button>
       </View>
     );
   }
@@ -116,21 +135,49 @@ export default class Home extends Component {
         }
       );
   }
+
+  _giveAdvice() {
+    console.log("Giving advice to users.");
+      Alert.alert(
+        'It seems like you are stressed out',
+        'We would suggest that you take a meditation break.\nWould you like to start a meditation break?',
+        [
+          {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ]
+      )
+    }
 }
+
+var toolbarActions = [
+  {title: 'Create', icon: require('./ic_account_circle_black_24dp.png'), show: 'always'},
+  {title: 'Signout'},
+  {title: 'Settings', icon: require('./ic_settings_black_24dp.png'), show: 'always'},
+];
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     // alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF'
   },
   chart: {
-    flex: 1
+    flex: 1,
+    margin: 10
   },
   text: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    padding: 15,
+    margin: 10
+  },
+  toolbar: {
+    backgroundColor: '#e9eaed',
+    height: 56,
+    paddingBottom: 15,
+    marginBottom: 10
   }
 });
 
