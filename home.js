@@ -10,7 +10,7 @@ import {
 import Button from 'react-native-button';
 import HRVCalculator from './hrv.js';
 import Graph from './graph.js';
-
+import {Actions} from 'react-native-router-flux';
 import reactAddonsUpdate from 'react-addons-update';
 var ToolbarAndroid = require('ToolbarAndroid');
 import * as Progress from 'react-native-progress';
@@ -109,7 +109,7 @@ export default class Home extends Component {
 
         <View style={styles.infoContainer}>
           <View style={styles.info}>
-            <Text style={styles.infoText}>HRV</Text>
+            <Text style={styles.infoTitle}>HRV</Text>
             {this.state.heart_rate['avg_rmssd'] && <AnimatedGaugeProgress
               size={80}
               width={15}
@@ -123,7 +123,7 @@ export default class Home extends Component {
               <Text style={styles.infoText}>{this.state.heart_rate['avg_rmssd']}</Text>
           </View>
           <View style={styles.info}>
-            <Text style={styles.infoText}>BPM</Text>
+            <Text style={styles.infoTitle}>BPM</Text>
             {this.state.heart_rate['bpm'] && <AnimatedGaugeProgress
               size={80}
               width={15}
@@ -140,7 +140,7 @@ export default class Home extends Component {
 
         <View style={styles.infoContainer}>
           <View style={styles.info}>
-            <Text style={styles.infoText}>Stress Level</Text>
+            <Text style={styles.infoTitle}>Stress Level</Text>
             <AnimatedGaugeProgress
               size={90}
               width={15}
@@ -185,8 +185,8 @@ export default class Home extends Component {
         'We recommend you go pet baby goats, if you don\'t have access to baby goats you can click the video below or listen to some soothing music',
         [
           {text: 'Later', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-          {text: 'Cute Video', onPress: () => Linking.openURL("https://youtu.be/JmGSCIy7-kk?t=36").catch(err => console.error('An error occurred', err))},
-          {text: 'Play Music', onPress: () => Linking.openURL("https://open.spotify.com/track/2QfFLpSGF1T1pY6tq4kD7Z").catch(err => console.error('An error occurred', err))},
+          {text: 'Cute Video', onPress: () => Actions.webview({uri: "https://youtu.be/JmGSCIy7-kk?t=36"})},
+          {text: 'Play Music', onPress: () => Actions.webview({uri: "https://open.spotify.com/track/2QfFLpSGF1T1pY6tq4kD7Z"})},
         ]
       )
     }
@@ -216,21 +216,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   info: {
-    width: 140,
+    width: 200,
     flexDirection: 'column',
-    padding: 10
+    paddingLeft: 30,
+    paddingRight: 15,
+    marginBottom: 10
+  },
+  infoTitle: {
+    textAlign: 'center',
+    fontSize: 20,
+    marginBottom: 10,
+    fontWeight: 'bold'
   },
   infoText: {
     textAlign: 'center',
     fontSize: 15,
-    marginBottom: 10
   },
   circle: {
     justifyContent: 'center',
     alignItems: 'center'
   },
   circleText: {
-    
+
   }
 });
 
