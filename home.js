@@ -40,12 +40,27 @@ export default class Home extends Component {
               datasets: [{
                 yValues: this.state.heart_rate['rmssd'],
                 label: 'Running RMDDS',
+                setDrawGridLines: false,
                 config: {
                   lineWidth: 2,
                   drawCircles: false,
                   drawCubic: true,
                   highlightColor: 'red',
-                  color: 'red'
+                  color: 'red',
+                  setDrawGridLines: false,
+                  setEnabled: false,
+                },
+                xAxis: {
+                  $set: {
+                    drawLabels: false,
+                    drawGridLines: false,
+                  }
+                },
+                yAxis: {
+                  $set: {
+                    drawLabels: false,
+                    drawGridLines: false,
+                  }
                 }
               }],
               xValues: this.state.heart_rate['time']

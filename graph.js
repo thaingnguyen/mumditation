@@ -17,21 +17,25 @@ export default class Graph extends Component {
         super();
 
         this.state = {
-        legend: {
-            enabled: true,
-            textColor: 'blue',
-            textSize: 12,
-            position: 'BELOW_CHART_RIGHT',
-            form: 'SQUARE',
-            formSize: 14,
-            xEntrySpace: 10,
-            yEntrySpace: 5,
-            formToTextSpace: 5,
-            wordWrapEnabled: true,
-            maxSizePercent: 0.5,
-            fontFamily: 'monospace',
-            fontStyle: 1
-        }
+            legend: {
+                enabled: false,
+            },
+            xAxis : {
+                drawLabels: false,
+                drawGridLines: false,
+                enabled: false,
+            },
+            yAxis : {
+                drawLabels: false,
+                drawGridLines: false,
+                enabled:false,
+                left: {
+                    enabled: false
+                },
+                right: {
+                    enabled: false
+                }
+            }
         };
     }
 
@@ -42,17 +46,24 @@ export default class Graph extends Component {
             data={this.props.data}
             description={{text: ''}}
             legend={this.state.legend}
+            xAxis={this.state.xAxis}
+            yAxis={this.state.yAxis}
 
+            setDrawLabels={false}
+            setDrawGridBackground={false}
+            setDrawBorders={false}
+            setDrawGridLines={false}
             drawGridBackground={false}
+
             borderColor={'teal'}
             borderWidth={1}
-            drawBorders={true}
+            drawBorders={false}
 
             touchEnabled={true}
             dragEnabled={true}
-            scaleEnabled={true}
-            scaleXEnabled={true}
-            scaleYEnabled={true}
+            scaleEnabled={false}
+            scaleXEnabled={false}
+            scaleYEnabled={false}
             pinchZoom={true}
             doubleTapToZoomEnabled={true}
 
