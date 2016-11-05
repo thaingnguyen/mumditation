@@ -15,6 +15,7 @@ import reactAddonsUpdate from 'react-addons-update';
 var ToolbarAndroid = require('ToolbarAndroid');
 import * as Progress from 'react-native-progress';
 import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
+import Communications from 'react-native-communications';
 
 export default class Home extends Component {
 
@@ -184,9 +185,10 @@ export default class Home extends Component {
         'It seems like you are stressed out',
         'We recommend you go pet baby goats, if you don\'t have access to baby goats you can click the video below or listen to some soothing music',
         [
-          {text: 'Later', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+          // {text: 'Later', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
           {text: 'Cute Video', onPress: () => Actions.webview({uri: "https://youtu.be/JmGSCIy7-kk?t=36"})},
           {text: 'Play Music', onPress: () => Actions.webview({uri: "https://open.spotify.com/track/2QfFLpSGF1T1pY6tq4kD7Z"})},
+          {text: 'Tell your partner', onPress: () => Communications.text('4133139159', "I'm not feeling well. Can you come home?")},
         ]
       )
     }
