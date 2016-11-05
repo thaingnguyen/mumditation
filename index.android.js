@@ -31,24 +31,24 @@ function getMoviesFromApiAsync() {
 function OAuth(client_id, cb) {
 
    // Listen to redirection
-  Linking.addEventListener('url', handleUrl);
-  function handleUrl(event){
-    console.log(event.url);
-    Linking.removeEventListener('url', handleUrl);
-    const [, query_string] = event.url.match(/\#(.*)/);
-    console.log(query_string);
-
-    const query = qs.parse(query_string);
-    console.log(`query: ${JSON.stringify(query)}`);
-
-    cb(query.access_token);
-
-    /*if (query.state === state) {
-      cb(query.code, getProfileData, 'access_token');
-    } else {
-      console.error('Error authorizing oauth redirection');
-    }*/
-  }
+  // Linking.addEventListener('url', handleUrl);
+  // function handleUrl(event){
+  //   console.log(event.url);
+  //   Linking.removeEventListener('url', handleUrl);
+  //   const [, query_string] = event.url.match(/\#(.*)/);
+  //   console.log(query_string);
+  //
+  //   const query = qs.parse(query_string);
+  //   console.log(`query: ${JSON.stringify(query)}`);
+  //
+  //   cb(query.access_token);
+  //
+  //   /*if (query.state === state) {
+  //     cb(query.code, getProfileData, 'access_token');
+  //   } else {
+  //     console.error('Error authorizing oauth redirection');
+  //   }*/
+  // }
 
    // Call OAuth
   const oauthurl = 'https://www.fitbit.com/oauth2/authorize?'+
@@ -96,12 +96,22 @@ export default class mumditation extends Component {
   }
 
   componentDidMount() {
-    const url = Linking.getInitialURL().then(url => {
-      if (url) {
-        const route = url.replace(/.*?:\/\//g, "");
-        this._navigator.replace(this.state.routes[route]);
-      }
-    });
+    Linking.getInitialURL().then(this._handleOpenURL);
+  }
+
+  _handleOpenURL(url) {
+    console.log(url);
+    if (url) {
+      console.log("GET DATA");
+
+      const [, query_string] = url.match(/\#(.*)/);
+      console.log(query_string);
+
+      const query = qs.parse(query_string);
+      console.log(`query: ${JSON.stringify(query)}`);
+
+      getData(query.access_token);
+    }
   }
 
   _fitbitLogin(event) {
