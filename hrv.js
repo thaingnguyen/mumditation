@@ -1,6 +1,6 @@
 export default class HRVCalculator {
     static getHRV(data) {
-        if (data) {
+        if (data && data['activities-heart-intraday']) {
             var bpms = data['activities-heart-intraday']['dataset'];
             console.log(bpms.length);
 
@@ -30,6 +30,14 @@ export default class HRVCalculator {
             stats['rmssd'] = runningRMSSD;
             stats['avg_rmssd'] = Number((runningSum / rmssdArr.length).toFixed(3));
             return stats;
+        } else {
+          return {
+            'stress': 'High',
+            'bpm': 70,
+            'avg_rmssd': 0.4,
+            'rmssd': [],
+            'time': []
+          }
         }
     }
 
