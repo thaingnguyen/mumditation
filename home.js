@@ -13,6 +13,7 @@ import Graph from './graph.js';
 
 import reactAddonsUpdate from 'react-addons-update';
 var ToolbarAndroid = require('ToolbarAndroid');
+import * as Progress from 'react-native-progress';
 
 export default class Home extends Component {
 
@@ -87,8 +88,11 @@ export default class Home extends Component {
 
         <View style={styles.infoContainer}>
           <View style={styles.info}>
-            <Text style={styles.infoText}>HRV</Text>
-            <Text style={styles.infoText}>{this.state.heart_rate['avg_rmssd']}</Text>
+            <Progress.Circle 
+              size={50} 
+              progress={this.state.heart_rate['avg_rmssd'])}
+              showsText={false}
+              />
           </View>
           <View style={styles.info}>
             <Text style={styles.infoText}>BPM</Text>
