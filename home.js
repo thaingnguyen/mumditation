@@ -38,7 +38,7 @@ export default class Home extends Component {
 
   _getData(access_token) {
       return fetch(
-         'https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json',
+         'https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1sec/time/00:00/23:59.json',
         {
           method: 'GET',
           headers: {
