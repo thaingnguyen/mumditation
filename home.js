@@ -139,10 +139,10 @@ export default class Home extends Component {
     console.log("Giving advice to users.");
       Alert.alert(
         'It seems like you are stressed out',
-        'We would suggest that you take a meditation break.\nWould you like to start a meditation break?',
+        'We recommend you go pet baby goats, if you don\'t have access to baby goats you can click the video below or listen to some soothing music',
         [
           {text: 'Later', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-          {text: 'Cute Pictures', onPress: () => console.log('Cancel Pressed')},
+          {text: 'Cute Video', onPress: () => Linking.openURL("https://youtu.be/JmGSCIy7-kk?t=36").catch(err => console.error('An error occurred', err))},
           {text: 'Play Music', onPress: () => Linking.openURL("https://open.spotify.com/track/2QfFLpSGF1T1pY6tq4kD7Z").catch(err => console.error('An error occurred', err))},
         ]
       )
