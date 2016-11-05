@@ -1,9 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -21,15 +15,10 @@ export default class mumditation extends Component {
   }
 
   _handleOpenURL(url) {
-    console.log(url);
     if (url) {
-      console.log("GET DATA");
       const [, query_string] = url.match(/\#(.*)/);
-      // console.log(query_string);
       const query = qs.parse(query_string);
-      // console.log(`query: ${JSON.stringify(query)}`);
       Actions.home({access_token: query.access_token});
-      // return AsyncStorage.setItem("access_token", query.access_token);
     }
   }
 

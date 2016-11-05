@@ -22,55 +22,63 @@ export default class Home extends Component {
     super(props);
 
     this.state = {
-      access_token : this.props.access_token,
       heart_rate : {},
-      data: {}
+      data: {},
+      access_token: props.access_token
     };
+
+    setInterval(this.getAndPopulateData.bind(this), 1000 * 60);
   }
 
-  componentDidMount() {
-
+  getAndPopulateData() {
+    if (this.state) {
+      this._getData(this.state.access_token).then((res) => {
+        console.log(res);
+        this.setState({heart_rate: HRVCalculator.getHRV(JSON.parse(res['_bodyInit']))});
+      }).then(() => {
+        if (this.state.heart_rate['stress'] === 'High') {
+          this._giveAdvice();
+        }
+        this.setState(
+          reactAddonsUpdate(this.state, {
+            data: {
+              $set: {
+                datasets: [{
+                  yValues: this.state.heart_rate['rmssd'],
+                  label: '',
+                  config: {
+                    lineWidth: 2,
+                    drawCircles: false,
+                    drawCubic: true,
+                    highlightColor: 'red',
+                    color: 'red',
+                    setDrawGridLines: false,
+                    setEnabled: false,
+                  },
+                  xAxis: {
+                    $set: {
+                      drawLabels: false,
+                      drawGridLines: false,
+                    }
+                  },
+                  yAxis: {
+                    $set: {
+                      drawLabels: false,
+                      drawGridLines: false,
+                    }
+                  }
+                }],
+                xValues: this.state.heart_rate['time']
+              }
+            }
+          })
+        );
+      });
+    }
   }
 
   componentWillMount() {
-    this._getData(this.props.access_token).then((res) => {
-      this.setState({heart_rate: HRVCalculator.getHRV(JSON.parse(res['_bodyInit']))});
-    }).then( () => {
-      this.setState(
-        reactAddonsUpdate(this.state, {
-          data: {
-            $set: {
-              datasets: [{
-                yValues: this.state.heart_rate['rmssd'],
-                label: '',
-                config: {
-                  lineWidth: 2,
-                  drawCircles: false,
-                  drawCubic: true,
-                  highlightColor: 'red',
-                  color: 'red',
-                  setDrawGridLines: false,
-                  setEnabled: false,
-                },
-                xAxis: {
-                  $set: {
-                    drawLabels: false,
-                    drawGridLines: false,
-                  }
-                },
-                yAxis: {
-                  $set: {
-                    drawLabels: false,
-                    drawGridLines: false,
-                  }
-                }
-              }],
-              xValues: this.state.heart_rate['time']
-            }
-          }
-        })
-      );
-    });
+    this.getAndPopulateData();
   };
 
   render() {
@@ -174,11 +182,11 @@ export default class Home extends Component {
     console.log("Giving advice to users.");
       Alert.alert(
         'It seems like you are stressed out',
-        'We would suggest that you take a meditation break.\nWould you like to start a meditation break?',
+        'We recommend you go pet baby goats, if you don\'t have access to baby goats you can click the video below or listen to some soothing music',
         [
-          {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-          {text: 'OK', onPress: () => Linking.openURL("https://open.spotify.com/track/2QfFLpSGF1T1pY6tq4kD7Z").catch(err => console.error('An error occurred', err))},
+          {text: 'Later', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+          {text: 'Cute Video', onPress: () => Linking.openURL("https://youtu.be/JmGSCIy7-kk?t=36").catch(err => console.error('An error occurred', err))},
+          {text: 'Play Music', onPress: () => Linking.openURL("https://open.spotify.com/track/2QfFLpSGF1T1pY6tq4kD7Z").catch(err => console.error('An error occurred', err))},
         ]
       )
     }
@@ -194,7 +202,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: '#F5FCFF'
   },
   toolbar: {

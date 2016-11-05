@@ -10,8 +10,6 @@ import config from './config.js';
 import qs from 'qs';
 
 function OAuth(client_id) {
-
-   // Call OAuth
   const oauthurl = 'https://www.fitbit.com/oauth2/authorize?'+
             qs.stringify({
               client_id,
@@ -19,9 +17,7 @@ function OAuth(client_id) {
               scope: 'heartrate activity activity profile sleep',
               redirect_uri: 'mppy://fit',
               expires_in: '31536000',
-              //state,
             });
-  console.log(oauthurl);
 
   Linking.openURL(oauthurl).catch(err => console.error('Error processing linking', err));
 }
