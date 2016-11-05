@@ -34,8 +34,15 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text style={styles.brand}>
+          Mumditation
+        </Text>
+        <Text style={styles.slogan}>
+          Experience a stress-free pregnancy
+        </Text>
         <Button
-          style={{borderWidth: 1, borderColor: 'blue'}}
+          containerStyle={styles.button_container}
+          style={styles.button}
           onPress={this._fitbitLogin}>
           Log In with Fibit
         </Button>
@@ -47,8 +54,31 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fd5c63',
+  },
+  brand: {
+    fontSize: 45,
+    color: 'white',
+    textAlign: 'center'
+  },
+  slogan: {
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center',
+    marginBottom: 150
+  },
+  button_container: {
+    padding: 15,
+    height: 60,
+    overflow: 'hidden',
+    borderRadius: 4,
+    backgroundColor: 'grey',
+  },
+  button: {
+    fontSize: 20,
+    color: 'white'
   }
 });
