@@ -8,10 +8,9 @@ import {
 } from 'react-native';
 import Button from 'react-native-button';
 import HRVCalculator from './hrv.js';
+import Graph from './graph.js';
 
 import reactAddonsUpdate from 'react-addons-update';
-import {LineChart} from 'react-native-mp-android-chart';
-
 var ToolbarAndroid = require('ToolbarAndroid');
 
 export default class Home extends Component {
@@ -22,22 +21,7 @@ export default class Home extends Component {
     this.state = {
       access_token : this.props.access_token,
       heart_rate : {},
-      data: {},
-      legend: {
-        enabled: true,
-        textColor: 'blue',
-        textSize: 12,
-        position: 'BELOW_CHART_RIGHT',
-        form: 'SQUARE',
-        formSize: 14,
-        xEntrySpace: 10,
-        yEntrySpace: 5,
-        formToTextSpace: 5,
-        wordWrapEnabled: true,
-        maxSizePercent: 0.5,
-        fontFamily: 'monospace',
-        fontStyle: 1
-      }
+      data: {}
     };
   }
 
@@ -90,33 +74,10 @@ export default class Home extends Component {
         </Button>
         <Text style={styles.text}>Your average RMSSD: {this.state.heart_rate['avg_rmssd']}</Text>
 
-        <LineChart
-          style={styles.chart}
-          data={this.state.data}
-          description={{text: ''}}
-          legend={this.state.legend}
-
-          drawGridBackground={false}
-          borderColor={'teal'}
-          borderWidth={1}
-          drawBorders={true}
-
-          touchEnabled={true}
-          dragEnabled={true}
-          scaleEnabled={true}
-          scaleXEnabled={true}
-          scaleYEnabled={true}
-          pinchZoom={true}
-          doubleTapToZoomEnabled={true}
-
-          dragDecelerationEnabled={true}
-          dragDecelerationFrictionCoef={0.99}
-
-          keepPositionOnRotation={false}
-        />
+        <Graph data={this.state.data}></Graph>
 
         <Button 
-          style={{borderWidth:0.5, borderColor: 'black'}}
+          style={{borderWidth:0.5, borderColor: 'black', height: 35}}
           onPress={this._giveAdvice}>
             Our Advice
         </Button>
@@ -125,6 +86,7 @@ export default class Home extends Component {
   }
 
   _getData(access_token) {
+      console.log("Getting data _getData");
       return fetch(
          'https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1sec/time/00:00/23:59.json',
         {
