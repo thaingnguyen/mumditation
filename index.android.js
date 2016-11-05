@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import config from './config.js';
 import qs from 'qs';
+import Button from 'react-native-button';
 
 function getMoviesFromApiAsync() {
   return fetch('https://facebook.github.io/react-native/movies.json')
@@ -48,7 +49,6 @@ function OAuth(client_id, cb) {
       console.error('Error authorizing oauth redirection');
     }*/
   }
-
 
    // Call OAuth
   const oauthurl = 'https://www.fitbit.com/oauth2/authorize?'+
@@ -93,10 +93,18 @@ export default class mumditation extends Component {
     this.state = {
       movies: '',
     };
-
   }
 
   componentDidMount() {
+    const url = Linking.getInitialURL().then(url => {
+      if (url) {
+        const route = url.replace(/.*?:\/\//g, "");
+        this._navigator.replace(this.state.routes[route]);
+      }
+    });
+  }
+
+  _fitbitLogin(event) {
     OAuth(config.client_id, getData);
   }
 
@@ -111,6 +119,11 @@ export default class mumditation extends Component {
         <Text style={styles.welcome}>
           {this.state.movies}
         </Text>
+        <Button
+          style={{borderWidth: 1, borderColor: 'blue'}}
+          onPress={this._fitbitLogin}>
+          Log In with Fibit
+        </Button>
       </View>
     );
   }
