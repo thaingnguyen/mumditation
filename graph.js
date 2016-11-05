@@ -9,6 +9,32 @@ import {LineChart} from 'react-native-mp-android-chart';
 
 export default class Graph extends Component {
 
+    constructor() {
+        super();
+
+        this.state = {
+            legend: {
+                enabled: false,
+            },
+            xAxis : {
+                drawLabels: false,
+                drawGridLines: false,
+                enabled: false,
+            },
+            yAxis : {
+                drawLabels: false,
+                drawGridLines: false,
+                enabled:false,
+                left: {
+                    enabled: false
+                },
+                right: {
+                    enabled: false
+                }
+            }
+        };
+    }
+
     render() {
         return (
             <LineChart
@@ -16,17 +42,26 @@ export default class Graph extends Component {
             data={this.props.data}
             description={{text: ''}}
 
+            legend={this.state.legend}
+            xAxis={this.state.xAxis}
+            yAxis={this.state.yAxis}
+
+            setDrawLabels={false}
+            setDrawGridBackground={false}
+            setDrawBorders={false}
+            setDrawGridLines={false}
             drawGridBackground={false}
+
             borderColor={'teal'}
             borderWidth={1}
-            drawBorders={true}
+            drawBorders={false}
 
             setDrawLabel={false}
             touchEnabled={true}
             dragEnabled={true}
-            scaleEnabled={true}
-            scaleXEnabled={true}
-            scaleYEnabled={true}
+            scaleEnabled={false}
+            scaleXEnabled={false}
+            scaleYEnabled={false}
             pinchZoom={true}
             doubleTapToZoomEnabled={true}
 
@@ -38,7 +73,6 @@ export default class Graph extends Component {
         );
     }
 }
-
 
 const styles = StyleSheet.create({
   chart: {

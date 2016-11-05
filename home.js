@@ -4,7 +4,8 @@ import {
   Text,
   View,
   StyleSheet,
-  Alert
+  Alert,
+  Linking
 } from 'react-native';
 import Button from 'react-native-button';
 import HRVCalculator from './hrv.js';
@@ -45,7 +46,21 @@ export default class Home extends Component {
                   drawCircles: false,
                   drawCubic: true,
                   highlightColor: 'red',
-                  color: 'red'
+                  color: 'red',
+                  setDrawGridLines: false,
+                  setEnabled: false,
+                },
+                xAxis: {
+                  $set: {
+                    drawLabels: false,
+                    drawGridLines: false,
+                  }
+                },
+                yAxis: {
+                  $set: {
+                    drawLabels: false,
+                    drawGridLines: false,
+                  }
                 }
               }],
               xValues: this.state.heart_rate['time']
@@ -120,7 +135,7 @@ export default class Home extends Component {
         [
           {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
           {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
+          {text: 'OK', onPress: () => Linking.openURL("https://open.spotify.com/track/2QfFLpSGF1T1pY6tq4kD7Z").catch(err => console.error('An error occurred', err))},
         ]
       )
     }
