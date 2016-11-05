@@ -5,6 +5,7 @@ import {
   StyleSheet
 } from 'react-native';
 import Button from 'react-native-button';
+import HRVCalculator from './hrv.js';
 
 export default class Home extends Component {
 
@@ -18,8 +19,7 @@ export default class Home extends Component {
 
   componentWillMount() {
     this._getData(this.props.access_token).then((res) => {
-      console.log(res);
-      this.setState({heart_rate: res});
+      this.setState({heart_rate: HRVCalculator.getHRV(JSON.parse(res['_bodyInit']))});
     });
   }
 
@@ -31,7 +31,7 @@ export default class Home extends Component {
           onPress={this._getData}>
           Get Heart Rate
         </Button>
-        <Text> {this.props.access_token} </Text>
+        <Text> {this.state.heart_rate} </Text>
       </View>
     );
   }

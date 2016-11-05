@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  StyleSheet
+  StyleSheet,
+  Linking
 } from 'react-native';
 import Button from 'react-native-button';
 import config from './config.js';
+import qs from 'qs';
 
 function OAuth(client_id) {
 
