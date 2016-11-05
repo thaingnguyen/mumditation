@@ -1,7 +1,7 @@
 export default class HRVCalculator {
     static getHRV(data) {
         console.log('something');
-        console.log(data);
+        // console.log(data);
         if(data) {
             var arr = data['activities-heart-intraday']['dataset'];
             var sum = 0;
@@ -22,14 +22,28 @@ export default class HRVCalculator {
             var rmssdArr = this.calculatingChunk(arr);
             // console.log(rmssdArr);
 
-            var sumRMSSD = 0;
+            // var sumRMSSD = 0;
+            // for(var index = 0; index < rmssdArr.length; index++) {
+            //     sumRMSSD += rmssdArr[index].rmssd;     
+            //     // console.log(rmssdArr[index].rmssd);           
+            // }
+            // console.log(sumRMSSD);
+            // var meanRMSSD = sumRMSSD / rmssdArr.length;
+            // return "Mean RMSSD: " + meanRMSSD;
+
+            var time = [];
+            var runningRMSSD = [];
+            var runningSum = 0;
             for(var index = 0; index < rmssdArr.length; index++) {
-                sumRMSSD += rmssdArr[index].rmssd;     
-                // console.log(rmssdArr[index].rmssd);           
+                time.push(rmssdArr[index].time.getHours() + ":" + rmssdArr[index].time.getMinutes());
+                runningRMSSD.push(rmssdArr[index].rmssd);
+                runningSum += rmssdArr[index].rmssd;
             }
-            console.log(sumRMSSD);
-            var meanRMSSD = sumRMSSD / rmssdArr.length;
-            return "Mean RMSSD: " + meanRMSSD;
+            var timeAndRMSSD = {};
+            timeAndRMSSD['time'] = time;
+            timeAndRMSSD['rmssd'] = runningRMSSD;
+            timeAndRMSSD['avg_rmssd'] = runningSum / rmssdArr.length;
+            return timeAndRMSSD;
         }
         else return "nope";
     }
