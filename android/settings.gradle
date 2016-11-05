@@ -6,3 +6,5 @@ project(':reactNativeMPAndroidChart').projectDir = new File(
   rootProject.projectDir,
   '../node_modules/react-native-mp-android-chart/android'
 )
+include ':react-native-android-circles'
+project(':react-native-android-circles').projectDir = new File(settingsDir, '../node_modules/react-native-android-circles')

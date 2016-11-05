@@ -10,9 +10,13 @@
     "react": "15.3.2",
     "react-addons-update": "^15.3.2",
     "react-native": "0.36.1",
+    "react-native-android-circles": "^0.2.0",
     "react-native-button": "^1.7.1",
+    "react-native-circular-progress": "0.0.7",
     "react-native-mp-android-chart": "^0.1.1",
-    "react-native-router-flux": "^3.36.0"
+    "react-native-progress": "^3.1.0",
+    "react-native-router-flux": "^3.36.0",
+    "react-native-simple-gauge": "^0.1.2"
   },
   "jest": {
     "preset": "jest-react-native"

@@ -14,6 +14,7 @@ import Graph from './graph.js';
 import reactAddonsUpdate from 'react-addons-update';
 var ToolbarAndroid = require('ToolbarAndroid');
 import * as Progress from 'react-native-progress';
+import { AnimatedGaugeProgress, GaugeProgress } from 'react-native-simple-gauge';
 
 export default class Home extends Component {
 
@@ -73,6 +74,18 @@ export default class Home extends Component {
   };
 
   render() {
+    var color = null;
+    var fill = 0;
+    if(this.state.heart_rate['stress'] == 'Low') {
+        fill = 33;
+        color = '#89CFF0';
+    } else if(this.state.heart_rate['stress'] == 'Medium') {
+        fill = 66;
+        color = '#FFA500';
+    } else {
+        fill = 100;
+        color = '#FF0000';
+    }
     return (
       <View style={styles.container}>
         <ToolbarAndroid
@@ -88,14 +101,31 @@ export default class Home extends Component {
 
         <View style={styles.infoContainer}>
           <View style={styles.info}>
-            <Progress.Circle 
-              size={50} 
-              progress={this.state.heart_rate['avg_rmssd'])}
-              showsText={false}
-              />
+            <Text style={styles.infoText}>HRV</Text>
+            {this.state.heart_rate['avg_rmssd'] && <AnimatedGaugeProgress
+              size={80}
+              width={15}
+              fill={this.state.heart_rate['avg_rmssd']*10/3 * 100}
+              rotation={90}
+              cropDegree={90}
+              tintColor={color}
+              backgroundColor="#b0c4de"
+              strokeCap="circle"
+              style={styles.circle} />}
+              <Text style={styles.infoText}>{this.state.heart_rate['avg_rmssd']}</Text>
           </View>
           <View style={styles.info}>
             <Text style={styles.infoText}>BPM</Text>
+            {this.state.heart_rate['bpm'] && <AnimatedGaugeProgress
+              size={80}
+              width={15}
+              fill={this.state.heart_rate['bpm'] / 180 * 100}
+              rotation={90}
+              cropDegree={90}
+              tintColor={color}
+              backgroundColor="#b0c4de"
+              strokeCap="circle"
+              style={styles.circle} />}
             <Text style={styles.infoText}>{this.state.heart_rate['bpm']}</Text>
           </View>
         </View>
@@ -103,7 +133,16 @@ export default class Home extends Component {
         <View style={styles.infoContainer}>
           <View style={styles.info}>
             <Text style={styles.infoText}>Stress Level</Text>
-            <Text style={styles.infoText}>{this.state.heart_rate['stress']}</Text>
+            <AnimatedGaugeProgress
+              size={90}
+              width={15}
+              fill={fill}
+              rotation={90}
+              cropDegree={90}
+              tintColor={color}
+              backgroundColor="#b0c4de"
+              strokeCap="circle"style={styles.circle} />
+              <Text style={styles.infoText}>{this.state.heart_rate['stress']}</Text>
           </View>
         </View>
 
@@ -161,8 +200,8 @@ const styles = StyleSheet.create({
   toolbar: {
     backgroundColor: '#fd5c63',
     height: 60,
-    paddingBottom: 15,
-    marginBottom: 10
+    paddingBottom: 10,
+    marginBottom: 5
   },
   infoContainer: {
     flexDirection: 'row',
@@ -170,13 +209,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   info: {
-    width: 200,
+    width: 140,
     flexDirection: 'column',
     padding: 10
   },
   infoText: {
     textAlign: 'center',
-    fontSize: 20
+    fontSize: 15,
+    marginBottom: 10
+  },
+  circle: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  circleText: {
+    
   }
 });
 
