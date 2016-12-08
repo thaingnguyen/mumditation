@@ -108,52 +108,52 @@ export default class Home extends Component {
             titleColor="white"
             subtitleColor="white"/>
 
-        <View style={styles.infoContainer}>
-          <View style={styles.info}>
-            <Text style={styles.infoTitle}>HRV</Text>
-            {this.state.heart_rate['avg_rmssd'] && <AnimatedGaugeProgress
-              size={80}
-              width={15}
-              fill={this.state.heart_rate['avg_rmssd']*10/3 * 100}
-              rotation={90}
-              cropDegree={90}
-              tintColor={color}
-              backgroundColor="#b0c4de"
-              strokeCap="circle"
-              style={styles.circle} />}
-              <Text style={styles.infoText}>{this.state.heart_rate['avg_rmssd']}</Text>
-          </View>
-          <View style={styles.info}>
-            <Text style={styles.infoTitle}>BPM</Text>
-            {this.state.heart_rate['bpm'] && <AnimatedGaugeProgress
-              size={80}
-              width={15}
-              fill={this.state.heart_rate['bpm'] / 180 * 100}
-              rotation={90}
-              cropDegree={90}
-              tintColor={color}
-              backgroundColor="#b0c4de"
-              strokeCap="circle"
-              style={styles.circle} />}
-            <Text style={styles.infoText}>{this.state.heart_rate['bpm']}</Text>
-          </View>
-        </View>
+            <View style={styles.infoContainer}>
+              <View style={styles.info}>
+                <Text style={styles.infoTitle}>HRV</Text>
+                {this.state.heart_rate['avg_rmssd'] && <AnimatedGaugeProgress
+                  size={80}
+                  width={15}
+                  fill={(this.state.heart_rate['avg_rmssd']-2.94)/1.38 * 100}
+                  rotation={90}
+                  cropDegree={90}
+                  tintColor={color}
+                  backgroundColor="#b0c4de"
+                  strokeCap="circle"
+                  style={styles.circle} />}
+                  <Text style={styles.infoText}>{this.state.heart_rate['avg_rmssd']}</Text>
+              </View>
+              <View style={styles.info}>
+                <Text style={styles.infoTitle}>BPM</Text>
+                {this.state.heart_rate['bpm'] && <AnimatedGaugeProgress
+                  size={80}
+                  width={15}
+                  fill={this.state.heart_rate['bpm'] / 180 * 100}
+                  rotation={90}
+                  cropDegree={90}
+                  tintColor={color}
+                  backgroundColor="#b0c4de"
+                  strokeCap="circle"
+                  style={styles.circle} />}
+                <Text style={styles.infoText}>{this.state.heart_rate['bpm']}</Text>
+              </View>
+            </View>
 
-        <View style={styles.infoContainer}>
-          <View style={styles.info}>
-            <Text style={styles.infoTitle}>Stress Level</Text>
-            <AnimatedGaugeProgress
-              size={90}
-              width={15}
-              fill={fill}
-              rotation={90}
-              cropDegree={90}
-              tintColor={color}
-              backgroundColor="#b0c4de"
-              strokeCap="circle"style={styles.circle} />
-              <Text style={styles.infoText}>{this.state.heart_rate['stress']}</Text>
-          </View>
-        </View>
+            <View style={styles.infoContainer}>
+              <View style={styles.info}>
+                <Text style={styles.infoTitle}>Stress Level</Text>
+                <AnimatedGaugeProgress
+                  size={90}
+                  width={15}
+                  fill={fill}
+                  rotation={90}
+                  cropDegree={90}
+                  tintColor={color}
+                  backgroundColor="#b0c4de"
+                  strokeCap="circle"style={styles.circle} />
+                  <Text style={styles.infoText}>{this.state.heart_rate['stress']}</Text>
+              </View>
+            </View>
 
         <Graph data={this.state.data}></Graph>
 
