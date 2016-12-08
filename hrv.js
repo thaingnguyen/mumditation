@@ -2,8 +2,9 @@ export default class HRVCalculator {
     static getHRV(data) {
         if (data && data['activities-heart-intraday']) {
             var data = data['activities-heart-intraday']['dataset'];
+            console.log("Received " + data.length + " data points");
             var rrIntervals = this.getRRIntervalsFromData(data);
-            var averageRMSSDs = this.getAvgRmssdOverInterval(rrIntervals, 60000);
+            var averageRMSSDs = this.getAvgRmssdOverInterval(rrIntervals, 30000);
             var sumRMSSD = 0;
             var rmssds = [];
             var times = [];
@@ -18,7 +19,7 @@ export default class HRVCalculator {
             console.log(rMSSD);
 
             var stats = {};
-            stats['stress'] = this.getStressLevel(rmssds, 3.58);
+            stats['stress'] = this.getStressLevel(rmssds, 3.3);
             stats['bpm'] = data[data.length-1].value;
             stats['rmssd'] = rmssds;
             stats['time'] = times;
@@ -26,7 +27,7 @@ export default class HRVCalculator {
 
 
             console.log(rmssds.join(","));
-            // console.log(times.join("','"));
+            console.log(times.join("','"));
 
             return stats;
         } else {
@@ -95,16 +96,13 @@ export default class HRVCalculator {
 
     static getStressLevel(rmssds, threshold) {
       var lowerCount = 0;
-      console.log(threshold);
       for (var index = 0; index < rmssds.length; index++) {
-        console.log(rmssds[index]);
-
         if (rmssds[index] < threshold) {
           lowerCount += 1.0;
         }
       }
       var stressPercent = lowerCount / rmssds.length;
-      console.log(stressPercent);
+      console.log("Stress percentages: " + stressPercent);
       if (stressPercent < 0.5) {
         return 'Low';
       } else if (stressPercent < 0.8) {
